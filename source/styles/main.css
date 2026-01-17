@@ -1,5 +1,5 @@
 /* Copyright (c) 2021-2026 Stuart Garner */
-/* Licensed under the MIT License */
+/* Licensed under the MIT License: https://github.com/MuskDuck95/admin-hub/blob/main/LICENSE */
 
 /* 
 
@@ -76,7 +76,7 @@
 
         16 - Global overrides
             16.1 - Image dark mode handling
-            17.2 - Superellipse support
+            16.2 - Superellipse support
             
 */
 
@@ -245,8 +245,32 @@
     --highlight-text-shadow-colour: transparent;
 }
 
-[highlight-colour="admin-hub-purple"] {
-    --highlight-background-colour: hsl(275, 53%, 15%);
+[highlight-colour="blackcurrant"] {
+    --highlight-background-colour: hsl(275 53% 15%);
+    --highlight-text-colour: hsl(0 0% 95%);
+    --highlight-text-shadow-colour: hsl(0 0% 5%);
+}
+
+[highlight-colour="rustic-red"] {
+    --highlight-background-colour: hsl(347 53% 15%);
+    --highlight-text-colour: hsl(0 0% 95%);
+    --highlight-text-shadow-colour: hsl(0 0% 5%);
+}
+
+[highlight-colour="camouflage"] {
+    --highlight-background-colour: hsl(59 53% 15%);
+    --highlight-text-colour: hsl(0 0% 95%);
+    --highlight-text-shadow-colour: hsl(0 0% 5%);
+}
+
+[highlight-colour="phthalo-green"] {
+    --highlight-background-colour: hsl(132 53% 15%);
+    --highlight-text-colour: hsl(0 0% 95%);
+    --highlight-text-shadow-colour: hsl(0 0% 5%);
+}
+
+[highlight-colour="oceanic-noir"] {
+    --highlight-background-colour: #122b3b;
     --highlight-text-colour: hsl(0 0% 95%);
     --highlight-text-shadow-colour: hsl(0 0% 5%);
 }
@@ -545,8 +569,6 @@ body {
     z-index: 6000;
 }
 
-
-
 /* 5.1 - Header */
 
 .content__header-container {
@@ -610,8 +632,6 @@ body {
 .content--search-mode .content__header-right-container {
     display: none;
 }
-
-
 
 /* 5.1.1 - Shared styling */
 
@@ -727,8 +747,6 @@ body {
     z-index: -1;
 }
 
-
-
 /* 5.1.2 - Sidebar expander */
 
 .content__sidebar-expander-container {
@@ -748,8 +766,6 @@ body {
     box-shadow: var(--l1-hover-box-shadow, 0 0 12px 0 hsl(0 0% 0% / 30%));
 }
 
-
-
 /* 5.1.3 - Status container */
 
 .content__status-container {
@@ -765,8 +781,6 @@ body {
     position: relative;
     text-shadow: 0 0 4px var(--text-shadow-colour, hsl(0 0% 95%));
 }
-
-
 
 /* 5.1.4 - Search box */
 
@@ -881,8 +895,6 @@ body {
     display: block;
 }
 
-
-
 /* 5.1.9 - Clock */
 
 .content__button-container > .content__clock-button {
@@ -911,8 +923,6 @@ body {
     margin-top: 2px;
 }
 
-
-
 /* 5.1.5 - RSS feed */
 
 /* 5.1.5.1 - RSS feed popup */
@@ -934,8 +944,6 @@ body {
     padding: 8px;
     white-space: nowrap;
 }
-
-
 
 /* 5.1.5.2 - RSS feed item */
 
@@ -990,15 +998,11 @@ body {
     font-size: 13px;
 }
 
-
-
 /* 5.1.6 - Theme toggle */
 
 .content__theme-toggle-button > img {
     content: var(--theme-toggle-image, url('../images/dark-mode.svg'));
 }
-
-
 
 /* 5.1.7 - View toggle */
 
@@ -1009,8 +1013,6 @@ body {
 .content--list-view .content__view-toggle-button > img {
     content: url('../images/dashboard-view.svg');
 }
-
-
 
 /* 5.1.8 - Settings (and Accessibility) */
 
@@ -1045,8 +1047,6 @@ body {
     font-weight: bold;
     margin: 8px 12px;
 }
-
-
 
 /* 5.1.8.2 - Checkbox */
 
@@ -1175,8 +1175,6 @@ body {
     display: block;
 }
 
-
-
 /* 5.1.8.3 - Radio button */
 
 .settings-popup__radio-button-container {
@@ -1253,8 +1251,6 @@ body {
     color: var(--text-colour, hsl(0 0% 5%));
 }
 
-
-
 /* 5.1.9.1 - Clock popup */
 
 .clock-popup__item-container {
@@ -1269,8 +1265,6 @@ body {
     font-size: 13px;
     white-space: nowrap;
 }
-
-
 
 /* 5.1.9.2 - Clock item */
 
@@ -1310,8 +1304,6 @@ body {
     text-align: right;
     white-space: nowrap;
 }
-
-
 
 /* 5.1.10 - Button group */
 
@@ -1532,8 +1524,6 @@ body {
 
 }
 
-
-
 /* 7.1 - Content container */
 
 .tile__content-container {
@@ -1543,8 +1533,6 @@ body {
     grid-row: 1;
     padding: 12px 8px 0 16px;
 }
-
-
 
 /* 7.1.1 - Header */
 
@@ -1561,8 +1549,6 @@ body {
     font-weight: bold;
     margin-right: 2px;
 }
-
-
 
 /* 7.1.2 - Body */
 
@@ -1656,8 +1642,6 @@ body {
     outline: 2px solid var(--outline-colour, hsl(0 0% 5%));
 }
 
-
-
 /* 7.2 - Image container */
 
 .tile__image-container {
@@ -1680,8 +1664,6 @@ body {
     -webkit-user-select: none;
     user-select: none;
 }
-
-
 
 /* 7.3 - Controls container */
 
@@ -1855,8 +1837,6 @@ body {
     padding-right: 8px;
 }
 
-
-
 /* 9.2 - Table */
 
 .list-view-table {
@@ -1958,8 +1938,6 @@ body {
     background-color: var(--table-row-hover-colour, hsl(249 11% 88%));
 }
 
-
-
 /* 9.3 - Content */
 
 .list-view-table__row > td {
@@ -2001,8 +1979,6 @@ body {
     display: inline-flex;
     gap: 4px;
 }
-
-
 
 /* 9.4 - Controls */
 
@@ -2360,8 +2336,6 @@ a.tag:focus-visible {
     outline: 2px solid var(--outline-colour, hsl(0 0% 5%));
 }
 
-
-
 /* 12.2 - About dialog */
 
 .about-dialog {
@@ -2416,8 +2390,6 @@ a.tag:focus-visible {
     font-weight: normal;
     margin-top: 12px;
 }
-
-
 
 /* 12.3 - Details dialog */
 
@@ -2785,8 +2757,6 @@ div.tag[data-tooltip],
 
 }
 
-
-
 /* 14.2 - Media queries */
 
 @media (1412px <= width < 1460px),
@@ -3037,9 +3007,7 @@ div.tag[data-tooltip],
     filter: var(--image-filter-shadow, drop-shadow(0 0 4px hsl(0 0% 0% / 50%)));
 }
 
-
-
-/* 17.2 - Superellipse support */
+/* 16.2 - Superellipse support */
 
 @supports (corner-shape: superellipse(1.2)) and selector(::-webkit-scrollbar) {
 

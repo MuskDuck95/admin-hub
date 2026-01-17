@@ -1,5 +1,5 @@
 // Copyright (c) 2021-2026 Stuart Garner
-// Licensed under the MIT License
+// Licensed under the MIT License: https://github.com/MuskDuck95/admin-hub/blob/main/LICENSE
 
 const fetchUrlSuffix = 'v2026.04';
 const monthNames = [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ];
@@ -134,7 +134,7 @@ function getListViewColumnVisibilityWidths() {
         listViewColumnWidths.push(columns[i].offsetWidth);
     }
 
-    // We'll reset the control pane's width.
+    // We'll reset the content pane's width.
     content.style.width = '';
 
     // We'll create a variable to track the minimum width the content pane can be for a column to be visible to the user.
@@ -2234,7 +2234,7 @@ function createSiteRow(siteConfiguration) {
         newSiteRow.appendChild(customColumnCell);
 
     }
-    
+
 
     // Last column (controls)
     const controlsCell = document.createElement('td');
