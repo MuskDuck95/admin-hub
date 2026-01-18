@@ -7,19 +7,19 @@ const pinnedSidebarMinimumWidth = 1412;
 const regexSpecialCharacters = /[.*+?^${}()|[\]\\]/g;
 const searchMinimumHeight = 300;
 
-var currentListViewSortColumn;
-var currentListViewSortDirection;
-var fetchLiveDataOnNextClockTick = false;
-var isLocalStorageAccessible = false;
-var listViewColumnsLastForceVisibility = true;
-var listViewColumnVisibilityWidths = [];
-var listViewCustomColumns = [];
-var rssFeedFileAge;
-var rssFeedLinkCreated = false;
-var sitesFileAge;
-var statisticsFileAge;
-var tileContainerCount = 0;
-var wasLiveDataFetched = false;
+let currentListViewSortColumn;
+let currentListViewSortDirection;
+let fetchLiveDataOnNextClockTick = false;
+let isLocalStorageAccessible = false;
+let listViewColumnsLastForceVisibility = true;
+let listViewColumnVisibilityWidths = [];
+let listViewCustomColumns = [];
+let rssFeedFileAge;
+let rssFeedLinkCreated = false;
+let sitesFileAge;
+let statisticsFileAge;
+let tileContainerCount = 0;
+let wasLiveDataFetched = false;
 
 // Main elements
 const bodyContainer = document.getElementsByClassName('body-container')[0];
@@ -165,7 +165,6 @@ function pinTile(siteID, isOnWindowLoad = false) {
         return;
     }
 
-    // We'll pin the tile.
     dashboardViewTileContainerPinned.appendChild(tileToPin);
     tileToPin.classList.add('tile--pinned');
     tileToPin.querySelector('.tile__pin-button').setAttribute('data-tooltip', 'Unpin site');
@@ -187,7 +186,6 @@ function unpinTile(siteID) {
         return;
     }
 
-    // We'll unpin the tile.
     const tileContainer = document.querySelector(`#${tileToUnpin.getAttribute('data-tilecontainer')}`);
     tileContainer.appendChild(tileToUnpin);
     tileToUnpin.classList.remove('tile--pinned');
@@ -807,47 +805,56 @@ function fetchBranding() {
     })
     .then(brandingJson => {
 
-        const currentDateTime = new Date();
-        const sidebarImageWrapper = document.getElementsByClassName('sidebar__image-wrapper')[0];
-
-        // Set the highlight-colour attribute.
-        document.documentElement.setAttribute('highlight-colour', brandingJson.HighlightColour.toLowerCase());
-
         // Set the webpage title.
-        document.title = brandingJson.WebsiteTitle;
+        if (typeof brandingJson.WebsiteTitle === 'string' && brandingJson.WebsiteTitle.length > 0) {
+            document.title = brandingJson.WebsiteTitle;
+        }
 
         // Set the favicon.
-        const favicon = document.querySelector("link[rel='icon']") || document.createElement('link');
-        favicon.setAttribute('type', 'image/x-icon');
-        favicon.setAttribute('rel', 'icon');
-        favicon.setAttribute('href', brandingJson.FaviconPath);
-        document.getElementsByTagName('head')[0].appendChild(favicon);
-
-        // Brand elements on the web page.
-        header.innerHTML = brandingJson.HeaderText;
-        const sidebarImage = document.createElement('img');
-        sidebarImage.classList.add(...createImageClassList(brandingJson));
-        sidebarImage.setAttribute('src', brandingJson.ImagePath);
-        sidebarImage.setAttribute('alt', brandingJson.WebsiteName);
-        sidebarImageWrapper.appendChild(sidebarImage);
-
-        // Set content in the about dialog.
-        aboutDialog.querySelector('.about-dialog__title-text').innerText = `${brandingJson.WebsiteName} ${brandingJson.WebsiteVersion}`;
-        aboutDialog.querySelector('.about-dialog__body-text').innerHTML = brandingJson.AboutText;
-        aboutDialog.querySelector('.about-dialog__footer-text').innerHTML = brandingJson.CopyrightText.replace('#YYYY#', currentDateTime.getUTCFullYear());
-
-        // Add a link to help in the sidebar footer.
-        const helpLink = document.createElement('a');
-        if (brandingJson.HelpHyperlink) {
-            helpLink.setAttribute('href', brandingJson.HelpHyperlink);
-            helpLink.setAttribute('rel', 'noopener noreferrer');
-            helpLink.setAttribute('target', '_blank');
-        } else {
-            helpLink.setAttribute('href', '');
-            helpLink.setAttribute('onclick', `alert("${brandingJson.HelpHyperlinkPlaceholder}"); return false;`);
+        if (typeof brandingJson.FaviconPath === 'string' && brandingJson.FaviconPath.length > 0) {
+            const favicon = document.querySelector("link[rel='icon']") || document.createElement('link');
+            favicon.setAttribute('type', 'image/x-icon');
+            favicon.setAttribute('rel', 'icon');
+            favicon.setAttribute('href', brandingJson.FaviconPath);
+            document.getElementsByTagName('head')[0].appendChild(favicon);
         }
-        helpLink.innerText = 'Help';
-        document.querySelector('#aboutButton').insertAdjacentElement('afterend', helpLink);
+
+        // Set the highlight-colour attribute.
+        if (typeof brandingJson.HighlightColour === 'string' && brandingJson.HighlightColour.length > 0) {
+            document.documentElement.setAttribute('highlight-colour', brandingJson.HighlightColour.toLowerCase());
+        }
+
+        // Set the header text.
+        if (typeof brandingJson.HeaderText === 'string' && brandingJson.HeaderText.length > 0) {
+            header.innerHTML = brandingJson.HeaderText;
+        }
+
+        // Set the sidebar image.
+        if (typeof brandingJson.ImagePath === 'string' && brandingJson.ImagePath.length > 0) {
+
+            const sidebarImageWrapper = document.createElement('div');
+            sidebarImageWrapper.classList = 'sidebar__image-wrapper';
+
+            const sidebarImage = document.createElement('img');
+            sidebarImage.classList.add(...createImageClassList(brandingJson));
+            sidebarImage.setAttribute('src', brandingJson.ImagePath);
+            sidebarImage.setAttribute('alt', 'Admin Hub');
+            
+            sidebarImageWrapper.appendChild(sidebarImage);
+            sidebar.querySelector('.sidebar__content-container').prepend(sidebarImageWrapper);
+
+        }
+
+        // Set the help hyperlink.
+        const helpHyperlink = document.querySelector('#helpHyperlink');
+        if (typeof brandingJson.HelpHyperlink === 'string' && brandingJson.HelpHyperlink.length > 0) {
+            helpHyperlink.setAttribute('href', brandingJson.HelpHyperlink);
+        } else if (typeof brandingJson.HelpHyperlinkPlaceholder === 'string' && brandingJson.HelpHyperlinkPlaceholder.length > 0) {
+            helpHyperlink.setAttribute('href', '');
+            helpHyperlink.setAttribute('onclick', `alert("${brandingJson.HelpHyperlinkPlaceholder}"); return false;`);
+            helpHyperlink.removeAttribute('rel');
+            helpHyperlink.removeAttribute('target');
+        }
 
     });
 
@@ -1298,7 +1305,7 @@ async function fetchStatistics() {
         statisticTileContainer.classList.add('dashboard-view__statistic-tile-container');
 
         const subcontainers = [];
-        var currentSubcontainer;
+        let currentSubcontainer;
 
         // We'll create a statistic tile for each statistic in the JSON file.
         for (let i = 0; i < statisticsJson.length; i++) {
