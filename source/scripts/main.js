@@ -1295,7 +1295,7 @@ async function fetchStatistics() {
         statisticsFileAge = newStatisticsFileAge;
 
         // We'll hide the statistics container if there's no statistics that need to be displayed.
-        if (statisticsJson.length < 1) {
+        if (statisticsJson.length === 0) {
             dashboardViewGroupContainerStatistics.innerHTML = '';
             return;
         }
@@ -1310,6 +1310,14 @@ async function fetchStatistics() {
         // We'll create a statistic tile for each statistic in the JSON file.
         for (let i = 0; i < statisticsJson.length; i++) {
 
+            if (typeof statisticsJson[i].Title !== 'string' || statisticsJson[i].Title.length === 0) {
+                throw new Error(`No Title was defined for statistic ${i.toString()} in the statistics.json file`);
+            }
+
+            if (typeof statisticsJson[i].Value !== 'string' || statisticsJson[i].Value.length === 0) {
+                throw new Error(`No Value was defined for statistic ${i.toString()} in the statistics.json file`);
+            }
+
             // To ensure the UI stays responsive, we align everything in the content pane based on the flow of site tiles.
             // Each site tile in the UI is the same width as two statistic tiles that we're about to create below.
             // To ensure everything lines up, we group every two statistic tiles together in a sub-container so that their flow matches that of the full width site tiles.
@@ -1322,11 +1330,11 @@ async function fetchStatistics() {
             // Create a new statistic tile.
             const newStatisticTile = document.importNode(statisticTileTemplate.content, true);
 
-            if (statisticsJson[i].Tooltip) {
+            if (typeof statisticsJson[i].Tooltip === 'string' && statisticsJson[i].Tooltip.length > 0) {
                 newStatisticTile.querySelector('.statistic-tile').setAttribute('data-tooltip', statisticsJson[i].Tooltip);
             }
 
-            if (statisticsJson[i].ImagePath) {
+            if (typeof statisticsJson[i].ImagePath === 'string' && statisticsJson[i].ImagePath.length > 0) {
                 newStatisticTile.querySelector('.statistic-tile__image-wrapper').innerHTML = `<img src='${statisticsJson[i].ImagePath}' alt='?'></img>`;
             } else {
                 newStatisticTile.querySelector('.statistic-tile__image-wrapper').remove();
