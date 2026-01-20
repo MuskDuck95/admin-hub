@@ -987,7 +987,7 @@ async function fetchListViewConfiguration() {
         throw new Error('Unable to fetch the list-view.json file');
     })
     .then(listViewJson => {
-        if (typeof listViewJson.CustomColumns !== 'undefined' && listViewJson.CustomColumns.length > 0) {
+        if (Array.isArray(listViewJson.CustomColumns) && listViewJson.CustomColumns.length > 0) {
             for (let i = 0; i < listViewJson.CustomColumns.length; i++) {
                 if (typeof listViewJson.CustomColumns[i] === 'string' && listViewJson.CustomColumns[i].length > 0) {
                     listViewCustomColumns.push(listViewJson.CustomColumns[i]);
@@ -1136,6 +1136,7 @@ async function fetchSites() {
             newSitesFileAge = response.headers.get('Last-Modified');
             return response.json();
         }
+        throw new Error('Unable to fetch the sites.json file');
     })
     .then(sitesJson => {
 
@@ -1228,7 +1229,7 @@ async function fetchSites() {
             const newTileGroup = document.importNode(tileGroupTemplate.content, true);
             newTileGroup.querySelector('.dashboard-view__group-title-text').innerHTML = `<span>${sitesJson[i].GroupName}</span>`;
 
-            if (typeof sitesJson[i].Sites !== 'undefined' && sitesJson[i].Sites.length > 0) {
+            if (Array.isArray(sitesJson[i].Sites) && sitesJson[i].Sites.length > 0) {
 
                 // We'll add each site directly to the tile group in dashboard view and in to the table in list view.
                 newTileGroup.querySelector('.dashboard-view__group-container').appendChild(createTileContainer(sitesJson[i].Sites));
@@ -1236,7 +1237,7 @@ async function fetchSites() {
                     listViewTableBody.appendChild(createSiteRow(sitesJson[i].Sites[j]));
                 }
 
-            } else if (typeof sitesJson[i].Subgroups !== 'undefined' && sitesJson[i].Subgroups.length > 0) {
+            } else if (Array.isArray(sitesJson[i].Subgroups) && sitesJson[i].Subgroups.length > 0) {
 
                 for (let j = 0; j < sitesJson[i].Subgroups.length; j++) {
 
@@ -1283,6 +1284,7 @@ async function fetchStatistics() {
             newStatisticsFileAge = response.headers.get('Last-Modified');
             return response.json();
         }
+        throw new Error('Unable to fetch the statistics.json file');
     })
     .then(statisticsJson => {
 
@@ -1376,7 +1378,7 @@ function checkSitesConfiguration(sitesJson) {
             throw new Error(`No GroupName was defined for group ${i.toString()} in the sites.json file`);
         }
 
-        if (typeof sitesJson[i].Sites !== 'undefined' && sitesJson[i].Sites.length > 0) {
+        if (Array.isArray(sitesJson[i].Sites) && sitesJson[i].Sites.length > 0) {
 
             // We'll check that each site in the group has a unique ID and a Name.
             for (let j = 0; j < sitesJson[i].Sites.length; j++) {
@@ -1392,7 +1394,7 @@ function checkSitesConfiguration(sitesJson) {
                 siteIDs.push(sitesJson[i].Sites[j].ID);
             }
 
-        } else if (typeof sitesJson[i].Subgroups !== 'undefined' && sitesJson[i].Subgroups.length > 0) {
+        } else if (Array.isArray(sitesJson[i].Subgroups) && sitesJson[i].Subgroups.length > 0) {
 
             // This group has subgroups specified instead of sites so we'll check each subgroup and its sites.
             for (let j = 0; j < sitesJson[i].Subgroups.length; j++) {
@@ -2191,7 +2193,7 @@ function createSiteRow(siteConfiguration) {
     const column3Cell = document.createElement('td');
     newSiteRow.setAttribute('data-sorttextcol3', '9');
 
-    if (typeof siteConfiguration.Tags !== 'undefined' && siteConfiguration.Tags.length > 0) {
+    if (Array.isArray(siteConfiguration.Tags) && siteConfiguration.Tags.length > 0) {
 
         const newTagContainer = document.createElement('div');
         newTagContainer.classList = 'list-view-table__cell-tag-container';
@@ -2232,7 +2234,7 @@ function createSiteRow(siteConfiguration) {
 
 
     // Custom columns
-    const customColumnsSpecified = (typeof siteConfiguration.ListViewCustomColumns !== 'undefined' && siteConfiguration.ListViewCustomColumns.length > 0) ? true : false;
+    const customColumnsSpecified = (Array.isArray(siteConfiguration.ListViewCustomColumns) && siteConfiguration.ListViewCustomColumns.length > 0) ? true : false;
 
     for (let i = 0; i < listViewCustomColumns.length; i++) {
 
@@ -2265,7 +2267,7 @@ function createSiteRow(siteConfiguration) {
     }
 
     // We'll add a button and popup for any additional hyperlinks that are specified.
-    if (typeof siteConfiguration.AdditionalHyperlinks !== 'undefined' && siteConfiguration.AdditionalHyperlinks.length > 0) {
+    if (Array.isArray(siteConfiguration.AdditionalHyperlinks) && siteConfiguration.AdditionalHyperlinks.length > 0) {
         const hyperlinkPopupTemplate = document.querySelector("#hyperlinkPopupTemplate");
         const newHyperlinkPopup = document.importNode(hyperlinkPopupTemplate.content, true);
         newHyperlinkPopup.querySelector('.hyperlink-popup-button').setAttribute('data-tooltip', 'Hyperlinks');
@@ -2279,7 +2281,7 @@ function createSiteRow(siteConfiguration) {
     newSiteRow.appendChild(controlsCell);
 
     // We'll add a click event to the row to show any additional details that are specified.
-    if (typeof siteConfiguration.AdditionalDetails !== 'undefined' && siteConfiguration.AdditionalDetails.length > 0) {
+    if (Array.isArray(siteConfiguration.AdditionalDetails) && siteConfiguration.AdditionalDetails.length > 0) {
         newSiteRow.classList.add('list-view-table__row--clickable');
         newSiteRow.setAttribute('onclick', 'listViewTableRow_ClickEvent(this, event)');
         newSiteRow.setAttribute('data-siteid', siteConfiguration.ID);
@@ -2308,7 +2310,7 @@ function createSiteTile(siteConfiguration, tileContainerID) {
 
     newSiteTile.querySelector('.tile__id-text').innerText = siteConfiguration.ID;
 
-    if (typeof siteConfiguration.Tags !== 'undefined' && siteConfiguration.Tags.length > 0) {
+    if (Array.isArray(siteConfiguration.Tags) && siteConfiguration.Tags.length > 0) {
 
         for (let i = 0; i < siteConfiguration.Tags.length; i++) {
 
@@ -2349,7 +2351,7 @@ function createSiteTile(siteConfiguration, tileContainerID) {
     }
 
     // We'll add any status items to tile if specified.
-    if (typeof siteConfiguration.Status !== 'undefined' && siteConfiguration.Status.length > 0) {
+    if (Array.isArray(siteConfiguration.Status) && siteConfiguration.Status.length > 0) {
 
         const statusContainerElement = newSiteTile.querySelector('.tile__status-container');
 
@@ -2390,7 +2392,7 @@ function createSiteTile(siteConfiguration, tileContainerID) {
                 const newStatusItemText = document.createElement('div');
                 newStatusItemText.classList = 'tile__status-item-text';
 
-                if (typeof statusConfigurationItem.SmallValueText !== 'undefined' && statusConfigurationItem.SmallValueText === true) {
+                if (typeof statusConfigurationItem.SmallValueText !== 'undefined' && statusConfigurationItem.SmallValueText !== false) {
                     newStatusItemText.classList.add('tile__status-item-text--small');
                 }
 
@@ -2465,7 +2467,7 @@ function createSiteTile(siteConfiguration, tileContainerID) {
     }
 
     // We'll add a button and popup for any additional hyperlinks that are specified.
-    if (typeof siteConfiguration.AdditionalHyperlinks !== 'undefined' && siteConfiguration.AdditionalHyperlinks.length > 0) {
+    if (Array.isArray(siteConfiguration.AdditionalHyperlinks) && siteConfiguration.AdditionalHyperlinks.length > 0) {
         const hyperlinkPopupTemplate = document.querySelector("#hyperlinkPopupTemplate");
         const newHyperlinkPopup = document.importNode(hyperlinkPopupTemplate.content, true);
         for (let i = 0; i < siteConfiguration.AdditionalHyperlinks.length; i++) {
@@ -2480,7 +2482,7 @@ function createSiteTile(siteConfiguration, tileContainerID) {
     controlsContainerElement.appendChild(newControlsContainerSeparator);
 
     // We'll add a button to show any additional details that are specified.
-    if (typeof siteConfiguration.AdditionalDetails !== 'undefined' && siteConfiguration.AdditionalDetails.length > 0) {
+    if (Array.isArray(siteConfiguration.AdditionalDetails) && siteConfiguration.AdditionalDetails.length > 0) {
         const additionalDetailsButtonTemplate = document.querySelector("#additionalDetailsButtonTemplate");
         const newAdditionalDetailsButton = document.importNode(additionalDetailsButtonTemplate.content, true);
         const newAdditionalDetailsButtonElement = newAdditionalDetailsButton.querySelector('.tile__show-details-button');
