@@ -2101,7 +2101,7 @@ function createHyperlink(hyperlinkConfiguration, imageOnlyHyperlink = false) {
 
     const newHyperlink = document.createElement('a');
 
-    if (typeof hyperlinkConfiguration.OpenUrlInNewTab === 'undefined' || hyperlinkConfiguration.OpenUrlInNewTab !== false) {
+    if (typeof hyperlinkConfiguration.OpenUrlInNewTab === 'undefined' || hyperlinkConfiguration.OpenUrlInNewTab === true) {
         newHyperlink.setAttribute('rel', 'noopener noreferrer');
         newHyperlink.setAttribute('target', '_blank');
     }
@@ -2259,10 +2259,10 @@ function createSiteRow(siteConfiguration) {
     newControlContainer.classList = 'list-view-table__cell-controls-container';
 
     // We'll create the main hyperlinks in the controls container.
-    if (typeof siteConfiguration.Hyperlink1 !== 'undefined') {
+    if (typeof siteConfiguration.Hyperlink1 !== 'undefined' && siteConfiguration.Hyperlink1 !== null) {
         newControlContainer.appendChild(createHyperlink(siteConfiguration.Hyperlink1, true));
     }
-    if (typeof siteConfiguration.Hyperlink2 !== 'undefined') {
+    if (typeof siteConfiguration.Hyperlink2 !== 'undefined' && siteConfiguration.Hyperlink2 !== null) {
         newControlContainer.appendChild(createHyperlink(siteConfiguration.Hyperlink2, true));
     }
 
@@ -2392,7 +2392,7 @@ function createSiteTile(siteConfiguration, tileContainerID) {
                 const newStatusItemText = document.createElement('div');
                 newStatusItemText.classList = 'tile__status-item-text';
 
-                if (typeof statusConfigurationItem.SmallValueText !== 'undefined' && statusConfigurationItem.SmallValueText !== false) {
+                if (typeof statusConfigurationItem.SmallValueText !== 'undefined' && statusConfigurationItem.SmallValueText === true) {
                     newStatusItemText.classList.add('tile__status-item-text--small');
                 }
 
@@ -2401,7 +2401,7 @@ function createSiteTile(siteConfiguration, tileContainerID) {
                     const newStatusItemHyperlink = document.createElement('a');
                     newStatusItemHyperlink.innerHTML = statusConfigurationItem.ValueText;
                     newStatusItemHyperlink.setAttribute('href', statusConfigurationItem.Url);
-                    if (typeof statusConfigurationItem.OpenUrlInNewTab === 'undefined' || statusConfigurationItem.OpenUrlInNewTab !== false) {
+                    if (typeof statusConfigurationItem.OpenUrlInNewTab === 'undefined' || statusConfigurationItem.OpenUrlInNewTab === true) {
                         newStatusItemHyperlink.setAttribute('rel', 'noopener noreferrer');
                         newStatusItemHyperlink.setAttribute('target', '_blank');
                     }
@@ -2445,11 +2445,11 @@ function createSiteTile(siteConfiguration, tileContainerID) {
     let showControlsPlaceholderText = true;
 
     // We'll create the main hyperlinks in the controls container.
-    if (typeof siteConfiguration.Hyperlink1 !== 'undefined') {
+    if (typeof siteConfiguration.Hyperlink1 !== 'undefined' && siteConfiguration.Hyperlink1 !== null) {
         controlsContainerElement.appendChild(createHyperlink(siteConfiguration.Hyperlink1));
         showControlsPlaceholderText = false;
     }
-    if (typeof siteConfiguration.Hyperlink2 !== 'undefined') {
+    if (typeof siteConfiguration.Hyperlink2 !== 'undefined' && siteConfiguration.Hyperlink2 !== null) {
         controlsContainerElement.appendChild(createHyperlink(siteConfiguration.Hyperlink2));
         showControlsPlaceholderText = false;
     }
@@ -2516,7 +2516,7 @@ function createTag(tagConfiguration, allowHyperlinks = true, allowTooltips = tru
 
     if (isHyperlink) {
         newTag.setAttribute('href', tagConfiguration.Url);
-        if (typeof tagConfiguration.OpenUrlInNewTab === 'undefined' || tagConfiguration.OpenUrlInNewTab !== false) {
+        if (typeof tagConfiguration.OpenUrlInNewTab === 'undefined' || tagConfiguration.OpenUrlInNewTab === true) {
             newTag.setAttribute('rel', 'noopener noreferrer');
             newTag.setAttribute('target', '_blank');
         }

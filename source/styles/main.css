@@ -268,7 +268,7 @@
 }
 
 [highlight-colour="oceanic-noir"] {
-    --highlight-background-colour: #122b3b;
+    --highlight-background-colour: hsl(203 53% 15%);
     --highlight-text-colour: hsl(0 0% 95%);
     --highlight-text-shadow-colour: hsl(0 0% 5%);
 }
@@ -1960,6 +1960,8 @@ body {
 }
 
 .list-view-table__cell-image-container > img {
+    max-height: 100%;
+    max-width: 100%;
     -o-object-fit: contain;
     object-fit: contain;
     -webkit-user-drag: none;
