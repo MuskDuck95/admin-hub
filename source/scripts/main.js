@@ -22,78 +22,78 @@ let tileContainerCount = 0;
 let wasLiveDataFetched = false;
 
 // Main elements
-const bodyContainer = document.getElementsByClassName('body-container')[0];
-const content = document.getElementsByClassName('content')[0];
-const contentHeaderContainerEffect = document.getElementsByClassName('content__header-container-effect')[0];
-const header = document.getElementsByClassName('header')[0];
-const hyperlinkPopups = document.getElementsByClassName('hyperlink-popup');
-const sidebar = document.getElementsByClassName('sidebar')[0];
+const bodyContainer = document.querySelector('.body-container');
+const content = document.querySelector('.content');
+const contentHeaderContainerEffect = document.querySelector('.content__header-container-effect');
+const header = document.querySelector('.header');
+const hyperlinkPopups = document.getElementsByClassName('hyperlink-popup'); // live list of elements
+const sidebar = document.querySelector('.sidebar');
 
 // Dialogs
-const aboutDialog = document.getElementsByClassName('about-dialog')[0];
-const detailsDialog = document.getElementsByClassName('details-dialog');
+const aboutDialog = document.querySelector('.about-dialog');
+const detailsDialog = document.getElementsByClassName('details-dialog'); // live list of elements
 
 // Tiles
-const dashboardViewGroupContainerStatistics = document.getElementById('dashboardViewGroupContainerStatistics');
-const dashboardViewGroupContainerPinned = document.getElementById('dashboardViewGroupContainerPinned');
-const dashboardViewTileContainerPinned = document.getElementById('dashboardViewTileContainerPinned');
-const dashboardViewTileContainers = document.getElementsByClassName('dashboard-view__tile-container');
-const tiles = document.getElementsByClassName('tile');
+const dashboardViewGroupContainerStatistics = document.querySelector('#dashboardViewGroupContainerStatistics');
+const dashboardViewGroupContainerPinned = document.querySelector('#dashboardViewGroupContainerPinned');
+const dashboardViewTileContainerPinned = document.querySelector('#dashboardViewTileContainerPinned');
+const dashboardViewTileContainers = document.getElementsByClassName('dashboard-view__tile-container'); // live list of elements
+const tiles = document.getElementsByClassName('tile'); // live list of elements
 
 // List view
-const listViewTable = document.getElementsByClassName('list-view-table')[0];
-const listViewTableBody = listViewTable.getElementsByTagName('tbody')[0];
-const listViewTableCells = listViewTableBody.getElementsByTagName('td');
-const listViewTableColumns = listViewTable.getElementsByTagName('colgroup')[0];
-const listViewTableHead = listViewTable.getElementsByTagName('thead')[0];
-const listViewTableHeaders = listViewTableHead.getElementsByTagName('th');
-const listViewTableRows = listViewTableBody.getElementsByTagName('tr');
+const listViewTable = document.querySelector('.list-view-table');
+const listViewTableBody = listViewTable.querySelector('tbody');
+const listViewTableCells = listViewTableBody.getElementsByTagName('td'); // live list of elements
+const listViewTableColumns = listViewTable.querySelector('colgroup');
+const listViewTableHead = listViewTable.querySelector('thead');
+const listViewTableHeaders = listViewTableHead.getElementsByTagName('th'); // live list of elements
+const listViewTableRows = listViewTableBody.getElementsByTagName('tr'); // live list of elements
 
 // Sidebar expander button
-const contentSidebarExpanderContainer = document.getElementsByClassName('content__sidebar-expander-container')[0];
+const contentSidebarExpanderContainer = document.querySelector('.content__sidebar-expander-container');
 
 // Status box
-const contentStatusIndicator = document.getElementById('contentStatusIndicator');
-const contentStatusText = document.getElementsByClassName('content__status-text')[0];
+const contentStatusIndicator = document.querySelector('#contentStatusIndicator');
+const contentStatusText = document.querySelector('.content__status-text');
 
 // Search bar
-const contentSearchInput = document.getElementById('contentSearchInput');
-const contentSearchCloseButtonContainer = document.getElementsByClassName('content__search-close-button-container')[0];
-const contentSearchCloseButton = document.getElementsByClassName('content__search-close-button')[0];
-const contentSearchCaptionText = document.getElementsByClassName('content__search-caption-text')[0];
+const contentSearchInput = document.querySelector('#contentSearchInput');
+const contentSearchCloseButtonContainer = document.querySelector('.content__search-close-button-container');
+const contentSearchCloseButton = document.querySelector('.content__search-close-button');
+const contentSearchCaptionText = document.querySelector('.content__search-caption-text');
 
 // Theme toggle button
-const contentThemeToggleContainer = document.getElementsByClassName('content__theme-toggle-container')[0];
+const contentThemeToggleContainer = document.querySelector('.content__theme-toggle-container');
 
 // View toggle button
-const contentViewToggleContainer = document.getElementsByClassName('content__view-toggle-container')[0];
+const contentViewToggleContainer = document.querySelector('.content__view-toggle-container');
 
 // RSS feed popup
-const contentRssFeedContainer = document.getElementsByClassName('content__rss-feed-container')[0];
+const contentRssFeedContainer = document.querySelector('.content__rss-feed-container');
 
 // Accessibility popup
-const contentAccessibilityContainer = document.getElementsByClassName('content__accessibility-container')[0];
+const contentAccessibilityContainer = document.querySelector('.content__accessibility-container');
 
 // Settings popup
-const contentSettingsContainer = document.getElementsByClassName('content__settings-container')[0];
-const settingsPopupPinSidebarCheckbox = document.getElementById('settingsPopupPinSidebarCheckbox');
-const settingsPopupShowClockCheckbox = document.getElementById('settingsPopupShowClockCheckbox');
-const settingsPopupShowRssFeedCheckbox = document.getElementById('settingsPopupShowRssFeedCheckbox');
-const settingsPopupShowThemeToggleCheckbox = document.getElementById('settingsPopupShowThemeToggleCheckbox');
-const settingsPopupShowViewToggleCheckbox = document.getElementById('settingsPopupShowViewToggleCheckbox');
-const settingsPopupSortByIDRadioButton = document.getElementById('settingsPopupSortByIDRadioButton');
-const settingsPopupSortByNameRadioButton = document.getElementById('settingsPopupSortByNameRadioButton');
-const settingsPopupSortByStatusRadioButton = document.getElementById('settingsPopupSortByStatusRadioButton');
-const settingsPopupAutomaticallyUpdateDataCheckbox = document.getElementById('settingsPopupAutomaticallyUpdateDataCheckbox');
-const settingsPopupShowStatisticsCheckbox = document.getElementById('settingsPopupShowStatisticsCheckbox');
-const settingsPopupAccessibilityNoTransparencyCheckbox = document.getElementById('settingsPopupAccessibilityNoTransparencyCheckbox');
-const settingsPopupAccessibilityBordersCheckbox = document.getElementById('settingsPopupAccessibilityBordersCheckbox');
+const contentSettingsContainer = document.querySelector('.content__settings-container');
+const settingsPopupPinSidebarCheckbox = document.querySelector('#settingsPopupPinSidebarCheckbox');
+const settingsPopupShowThemeToggleCheckbox = document.querySelector('#settingsPopupShowThemeToggleCheckbox');
+const settingsPopupShowViewToggleCheckbox = document.querySelector('#settingsPopupShowViewToggleCheckbox');
+const settingsPopupShowRssFeedCheckbox = document.querySelector('#settingsPopupShowRssFeedCheckbox');
+const settingsPopupShowClockCheckbox = document.querySelector('#settingsPopupShowClockCheckbox');
+const settingsPopupShowStatisticsCheckbox = document.querySelector('#settingsPopupShowStatisticsCheckbox');
+const settingsPopupSortByIDRadioButton = document.querySelector('#settingsPopupSortByIDRadioButton');
+const settingsPopupSortByNameRadioButton = document.querySelector('#settingsPopupSortByNameRadioButton');
+const settingsPopupSortByStatusRadioButton = document.querySelector('#settingsPopupSortByStatusRadioButton');
+const settingsPopupAutomaticallyUpdateDataCheckbox = document.querySelector('#settingsPopupAutomaticallyUpdateDataCheckbox');
+const settingsPopupAccessibilityNoTransparencyCheckbox = document.querySelector('#settingsPopupAccessibilityNoTransparencyCheckbox');
+const settingsPopupAccessibilityBordersCheckbox = document.querySelector('#settingsPopupAccessibilityBordersCheckbox');
 
 // Clock popup
-const contentClockContainer = document.getElementsByClassName('content__clock-container')[0];
-const contentClockButtonTimeText = document.getElementsByClassName('content__clock-button-time-text')[0];
-const contentClockButtonDateText = document.getElementsByClassName('content__clock-button-date-text')[0];
-const clockPopupItemTimeText = document.getElementsByClassName('clock-popup__item-time-text');
+const contentClockContainer = document.querySelector('.content__clock-container');
+const contentClockButtonTimeText = document.querySelector('.content__clock-button-time-text');
+const contentClockButtonDateText = document.querySelector('.content__clock-button-date-text');
+const clockPopupItemTimeText = document.getElementsByClassName('clock-popup__item-time-text'); // live list of elements
 
 // We'll add an event listener for the window load event.
 window.addEventListener('load', window_LoadEvent);
@@ -816,7 +816,7 @@ function fetchBranding() {
             favicon.setAttribute('type', 'image/x-icon');
             favicon.setAttribute('rel', 'icon');
             favicon.setAttribute('href', brandingJson.FaviconPath);
-            document.getElementsByTagName('head')[0].appendChild(favicon);
+            document.querySelector('head').appendChild(favicon);
         }
 
         // Set the highlight-colour attribute.
@@ -875,7 +875,7 @@ function fetchClocks() {
         if (clocksJson) {
 
             const clockPopupItemTemplate = document.querySelector("#clockPopupItemTemplate");
-            const clockPopupItemContainer = document.getElementsByClassName('clock-popup__item-container')[0];
+            const clockPopupItemContainer = document.querySelector('.clock-popup__item-container');
             clockPopupItemContainer.innerHTML = '';
 
             for (let i = 0; i < clocksJson.length; i++) {
@@ -925,7 +925,7 @@ function fetchHyperlinks() {
     })
     .then(hyperlinksJson => {
 
-        const hyperlinkGroupContainer = document.getElementsByClassName('sidebar__hyperlink-group-container')[0];
+        const hyperlinkGroupContainer = document.querySelector('.sidebar__hyperlink-group-container');
         hyperlinkGroupContainer.innerHTML = '';
 
         // We'll create and construct a new hyperlink group for each group specified in the JSON file.
@@ -987,11 +987,12 @@ async function fetchListViewConfiguration() {
         throw new Error('Unable to fetch the list-view.json file');
     })
     .then(listViewJson => {
-        if (Array.isArray(listViewJson.CustomColumns) && listViewJson.CustomColumns.length > 0) {
-            for (let i = 0; i < listViewJson.CustomColumns.length; i++) {
-                if (typeof listViewJson.CustomColumns[i] === 'string' && listViewJson.CustomColumns[i].length > 0) {
-                    listViewCustomColumns.push(listViewJson.CustomColumns[i]);
-                }
+        if (!Array.isArray(listViewJson.CustomColumns) || listViewJson.CustomColumns.length === 0) {
+            return;
+        }
+        for (let i = 0; i < listViewJson.CustomColumns.length; i++) {
+            if (typeof listViewJson.CustomColumns[i] === 'string' && listViewJson.CustomColumns[i].length > 0) {
+                listViewCustomColumns.push(listViewJson.CustomColumns[i]);
             }
         }
     });
@@ -1001,10 +1002,25 @@ async function fetchListViewConfiguration() {
 // Function to load live data (sites and the RSS feed) in to the page.
 async function fetchLiveData() {
 
-    const pinnedSites = isLocalStorageAccessible ? localStorage.getItem('PinnedSites') : null;
-    const sortBy = isLocalStorageAccessible ? localStorage.getItem('SortBy') : 'data-siteid';
-    const listViewSortColumn = isLocalStorageAccessible ? localStorage.getItem('ListViewSortColumn') : '1';
-    const listViewSortDirection = isLocalStorageAccessible ? localStorage.getItem('ListViewSortDirection') : 'ascending';
+    const pinnedSites =
+        isLocalStorageAccessible
+            ? localStorage.getItem('PinnedSites')
+            : null;
+
+    const sortBy =
+        isLocalStorageAccessible
+            ? localStorage.getItem('SortBy') ?? 'data-siteid'
+            : 'data-siteid';
+
+    const listViewSortColumn =
+        isLocalStorageAccessible
+            ? localStorage.getItem('ListViewSortColumn') ?? '1'
+            : '1';
+
+    const listViewSortDirection =
+        isLocalStorageAccessible
+            ? localStorage.getItem('ListViewSortDirection') ?? 'ascending'
+            : 'ascending';
 
     wasLiveDataFetched = false;
 
@@ -1039,8 +1055,8 @@ async function fetchLiveData() {
     }
 
     settingsPopupShowStatisticsCheckbox_ChangeEvent();
-    sortListViewTable((listViewSortColumn === null) ? '1' : listViewSortColumn, (listViewSortDirection === null) ? 'ascending' : listViewSortDirection);
-    sortTiles((sortBy === null) ? 'data-siteid' : sortBy);
+    sortListViewTable(listViewSortColumn, listViewSortDirection);
+    sortTiles(sortBy);
     getListViewColumnVisibilityWidths();
     setListViewTableResponsiveUI();
 
@@ -1065,12 +1081,14 @@ async function fetchLiveData() {
 function fetchRssFeed() {
 
     let newRssFeedFileAge;
+    let rssUrl;
 
     // Fetch then process the RSS file (this file sits at the root of the site and does not have a file extension).
     fetch('rss', { cache: 'no-store' })
     .then(response => {
         if (response.ok) {
             newRssFeedFileAge = response.headers.get('Last-Modified');
+            rssUrl = response.url;
             return response.text();
         }
         throw new Error('Unable to fetch the RSS file');
@@ -1089,7 +1107,7 @@ function fetchRssFeed() {
 
         const rssItems = rss.getElementsByTagName('item');
         const rssFeedPopupItemTemplate = document.querySelector("#rssFeedPopupItemTemplate");
-        const rssFeedPopupItemContainer = document.getElementsByClassName('rss-feed-popup__item-container')[0];
+        const rssFeedPopupItemContainer = document.querySelector('.rss-feed-popup__item-container');
         rssFeedPopupItemContainer.innerHTML = '';
 
         // We'll add each RSS feed item to the RRS feed popup.
@@ -1102,16 +1120,11 @@ function fetchRssFeed() {
             rssFeedPopupItemContainer.appendChild(newRssFeedPopupItem);
         }
 
-        let rssHyperlink = rss.getElementsByTagName('link')[0].innerHTML;
-        if (rssHyperlink.endsWith('/')) {
-            rssHyperlink = rssHyperlink.slice(0, -1);
-        }
-
         // We'll add a link to the RSS feed in the sidebar footer (if it doesn't exist already).
         if (!rssFeedLinkCreated) {
             const rssFeedLink = document.createElement('a');
             rssFeedLink.id = 'rssFeedLink';
-            rssFeedLink.setAttribute('href', `${rssHyperlink}/rss`);
+            rssFeedLink.setAttribute('href', rssUrl);
             rssFeedLink.setAttribute('rel', 'noopener noreferrer');
             rssFeedLink.setAttribute('target', '_blank');
             rssFeedLink.innerText = 'RSS';
@@ -1532,7 +1545,7 @@ async function window_LoadEvent() {
 
     // We'll check if local storage is available.
     try {
-        isLocalStorageAccessible = ('localStorage' in window && window['localStorage'] !== null) ? true : false;
+        isLocalStorageAccessible = ('localStorage' in window && window['localStorage'] !== null);
     } catch {
         isLocalStorageAccessible = false;
     }
@@ -1541,46 +1554,92 @@ async function window_LoadEvent() {
         alert('Admin Hub won\'t be able to save pinned sites and changes to preferences as your web browser\'s local storage can\'t be accessed.\n\nAny changes you make to Admin Hub will be lost when you refresh or close the page.');
     }
 
-    // Get all of the settings from local storage (if its accessible).
-    const pinSidebar = isLocalStorageAccessible ? localStorage.getItem('PinSidebar') : 'true';
-    const showRssFeed = isLocalStorageAccessible ? localStorage.getItem('ShowRssFeed') : 'true';
-    const showThemeToggle = isLocalStorageAccessible ? localStorage.getItem('ShowThemeToggle') : 'true';
-    const showViewToggle = isLocalStorageAccessible ? localStorage.getItem('ShowViewToggle') : 'true';
-    const showClock = isLocalStorageAccessible ? localStorage.getItem('ShowClock') : 'true';
-    const autoDataUpdate = isLocalStorageAccessible ? localStorage.getItem('AutoDataUpdate') : 'true';
-    const showStatistics = isLocalStorageAccessible ? localStorage.getItem('ShowStatistics') : 'true';
-    const colourTheme = isLocalStorageAccessible ? localStorage.getItem('ColourTheme') : 'light-mode';
-    const view = isLocalStorageAccessible ? localStorage.getItem('View') : 'dashboard-view';
-    const accessibilityNoTransparency = isLocalStorageAccessible ? localStorage.getItem('AccessibilityNoTransparency') : 'false';
-    const accessibilityBorders = isLocalStorageAccessible ? localStorage.getItem('AccessibilityBorders') : 'false';
-    const listViewSortColumn = isLocalStorageAccessible ? localStorage.getItem('ListViewSortColumn') : '1';
-    const listViewSortDirection = isLocalStorageAccessible ? localStorage.getItem('ListViewSortDirection') : 'ascending';
+    // We'll load the user's settings from local storage and configure elements on the page accordingly.
 
-    // Set the state of the checkboxes in the settings popup based on the settings in local storage.
-    settingsPopupPinSidebarCheckbox.checked = (pinSidebar === null || pinSidebar === 'true') ? true : false;
-    settingsPopupShowRssFeedCheckbox.checked = (showRssFeed === null || showRssFeed === 'true') ? true : false;
-    settingsPopupShowThemeToggleCheckbox.checked = (showThemeToggle === null || showThemeToggle === 'true') ? true : false;
-    settingsPopupShowViewToggleCheckbox.checked = (showViewToggle === null || showViewToggle === 'true') ? true : false;
-    settingsPopupShowClockCheckbox.checked = (showClock === null || showClock === 'true') ? true : false;
-    settingsPopupAutomaticallyUpdateDataCheckbox.checked = (autoDataUpdate === null || autoDataUpdate === 'true') ? true : false;
-    settingsPopupShowStatisticsCheckbox.checked = (showStatistics === null || showStatistics === 'true') ? true : false;
-    settingsPopupAccessibilityNoTransparencyCheckbox.checked = (accessibilityNoTransparency === null || accessibilityNoTransparency === 'false') ? false : true;
-    settingsPopupAccessibilityBordersCheckbox.checked = (accessibilityBorders === null || accessibilityBorders === 'false') ? false : true;
-
-    // We'll call the change events for the settings popup checkboxes that don't effect tile configuration.
-    // The change events for checkboxes that do effect tile configuration are called by the fetchLiveData() function.
+    const pinSidebar =
+        isLocalStorageAccessible
+            ? localStorage.getItem('PinSidebar') ?? 'true'
+            : 'true';
+    settingsPopupPinSidebarCheckbox.checked = (pinSidebar === 'true');
     settingsPopupPinSidebarCheckbox_ChangeEvent();
-    settingsPopupShowRssFeedCheckbox_ChangeEvent();
-    settingsPopupShowThemeToggleCheckbox_ChangeEvent();
-    settingsPopupShowViewToggleCheckbox_ChangeEvent();
-    settingsPopupShowClockCheckbox_ChangeEvent();
-    settingsPopupAutomaticallyUpdateDataCheckbox_ChangeEvent(true);
-    settingsPopupAccessibilityNoTransparencyCheckbox_ChangeEvent();
-    settingsPopupAccessibilityBordersCheckbox_ChangeEvent();
 
-    // Set the view and colour theme.
-    setColourTheme((colourTheme === null) ? 'light-mode' : colourTheme);
-    setView((view === null) ? 'dashboard-view' : view, true);
+    const showThemeToggle =
+        isLocalStorageAccessible
+            ? localStorage.getItem('ShowThemeToggle') ?? 'true'
+            : 'true';
+    settingsPopupShowThemeToggleCheckbox.checked = (showThemeToggle === 'true');
+    settingsPopupShowThemeToggleCheckbox_ChangeEvent();
+
+    const showViewToggle =
+        isLocalStorageAccessible
+            ? localStorage.getItem('ShowViewToggle') ?? 'true'
+            : 'true';
+    settingsPopupShowViewToggleCheckbox.checked = (showViewToggle === 'true');
+    settingsPopupShowViewToggleCheckbox_ChangeEvent();
+
+    const showRssFeed =
+        isLocalStorageAccessible
+            ? localStorage.getItem('ShowRssFeed') ?? 'true'
+            : 'true';
+    settingsPopupShowRssFeedCheckbox.checked = (showRssFeed === 'true');
+    settingsPopupShowRssFeedCheckbox_ChangeEvent();
+   
+    const showClock =
+        isLocalStorageAccessible
+            ? localStorage.getItem('ShowClock') ?? 'true'
+            : 'true';
+    settingsPopupShowClockCheckbox.checked = (showClock === 'true');
+    settingsPopupShowClockCheckbox_ChangeEvent();
+
+    const showStatistics =
+        isLocalStorageAccessible
+            ? localStorage.getItem('ShowStatistics') ?? 'true'
+            : 'true';
+    settingsPopupShowStatisticsCheckbox.checked = (showStatistics === 'true');
+    // settingsPopupShowStatisticsCheckbox_ChangeEvent() is called by fetchLiveData()
+    
+    const autoDataUpdate =
+        isLocalStorageAccessible
+            ? localStorage.getItem('AutoDataUpdate') ?? 'true'
+            : 'true';
+    settingsPopupAutomaticallyUpdateDataCheckbox.checked = (autoDataUpdate === 'true');
+    settingsPopupAutomaticallyUpdateDataCheckbox_ChangeEvent(true);
+    
+    const accessibilityNoTransparency =
+        isLocalStorageAccessible
+            ? localStorage.getItem('AccessibilityNoTransparency') ?? 'false'
+            : 'false';
+    settingsPopupAccessibilityNoTransparencyCheckbox.checked = (accessibilityNoTransparency === 'true');
+    settingsPopupAccessibilityNoTransparencyCheckbox_ChangeEvent();
+    
+    const accessibilityBorders =
+        isLocalStorageAccessible
+            ? localStorage.getItem('AccessibilityBorders') ?? 'false'
+            : 'false';
+    settingsPopupAccessibilityBordersCheckbox.checked = (accessibilityBorders === 'true');
+    settingsPopupAccessibilityBordersCheckbox_ChangeEvent();
+    
+    const colourTheme =
+        isLocalStorageAccessible
+            ? localStorage.getItem('ColourTheme') ?? 'light-mode'
+            : 'light-mode';
+    setColourTheme(colourTheme);
+    
+    const view =
+        isLocalStorageAccessible
+            ? localStorage.getItem('View') ?? 'dashboard-view'
+            : 'dashboard-view';
+    setView(view, true);
+    
+    const listViewSortColumn =
+        isLocalStorageAccessible
+            ? localStorage.getItem('ListViewSortColumn') ?? '1'
+            : '1';
+    
+    const listViewSortDirection =
+        isLocalStorageAccessible
+            ? localStorage.getItem('ListViewSortDirection') ?? 'ascending'
+            : 'ascending';
 
     // We'll wait for the live data to be fetched before setting the clock configuration.
     // We fetch the clocks after the live data fetch has completed as the fetchClocks() function indirectly handles the text displayed to the user that shows when live data was last updated.
@@ -1588,9 +1647,7 @@ async function window_LoadEvent() {
     fetchClocks();
 
     // We'll sort the list view table.
-    const sortColumn = (listViewSortColumn === null) ? '1' : listViewSortColumn;
-    const sortDirection = (listViewSortDirection === null) ? 'ascending' : listViewSortDirection;
-    sortListViewTable(sortColumn, sortDirection);
+    sortListViewTable(listViewSortColumn, listViewSortDirection);
 
     // We'll add event listeners and observers.
     window.addEventListener('click', (event) => { window_ClickEvent(event) });
@@ -1704,26 +1761,23 @@ function window_KeyUpEvent(event) {
         exitSearchMode = false;
     }
 
-    if (exitSearchMode && !ctrlKPressed) {
+    // Give the search input focus.
+    if (ctrlKPressed) {
+        contentSearchInput.focus();
 
-        // Exit search mode, if its active.
+    // Exit search mode, if its active.
+    } else if (exitSearchMode) {
         if (content.classList.contains('content--search-mode')) {
             contentSearchInput.value = '';
             contentSearchInput.blur();
             searchTiles();
-
         } else if (content.classList.contains('content--list-view-search-mode')) {
             contentSearchInput.value = '';
             contentSearchInput.blur();
             searchList();
-
-        // Exit focus from the search input.
         } else if (document.activeElement === contentSearchInput) {
             contentSearchInput.blur();
         }
-
-    } else if (ctrlKPressed) {
-        contentSearchInput.focus();
     }
 
 }
@@ -1808,13 +1862,17 @@ function contentSearchCloseButton_ClickEvent() {
 
 // Function that gets executed when a key up event occurs within the search input.
 function contentSearchInput_KeyUpEvent(event) {
-    if (event.key !== 'Escape' && event.key !== 'Tab' && event.key !== 'Control' && !(event.ctrlKey && event.code === 'KeyK')) {
-        if (content.classList.contains('content--list-view')) {
-            searchList();
-        } else {
-            searchTiles();
-        }
+
+    if (event.key === 'Escape' || event.key === 'Tab' || event.key === 'Control' || (event.ctrlKey && event.code === 'KeyK')) {
+        return;
     }
+
+    if (content.classList.contains('content--list-view')) {
+        searchList();
+    } else {
+        searchTiles();
+    }
+
 }
 
 // Function that gets executed when the RSS feed button is clicked.
@@ -2101,7 +2159,7 @@ function createHyperlink(hyperlinkConfiguration, imageOnlyHyperlink = false) {
 
     const newHyperlink = document.createElement('a');
 
-    if (typeof hyperlinkConfiguration.OpenUrlInNewTab === 'undefined' || hyperlinkConfiguration.OpenUrlInNewTab === true) {
+    if (typeof hyperlinkConfiguration.OpenUrlInNewTab === 'undefined' || hyperlinkConfiguration.OpenUrlInNewTab !== false) {
         newHyperlink.setAttribute('rel', 'noopener noreferrer');
         newHyperlink.setAttribute('target', '_blank');
     }
@@ -2119,7 +2177,6 @@ function createHyperlink(hyperlinkConfiguration, imageOnlyHyperlink = false) {
     }
 
     if (typeof hyperlinkConfiguration.Title === 'string' && hyperlinkConfiguration.Title.length > 0) {
-
         if (imageOnlyHyperlink) {
             newHyperlink.setAttribute('data-tooltip', hyperlinkConfiguration.Title);
         } else {
@@ -2153,8 +2210,7 @@ function createSiteRow(siteConfiguration) {
     const newSiteRow = document.createElement('tr');
     newSiteRow.classList = 'list-view-table__row';
 
-
-    // Column 0 (site image)
+    // Column 0 (site image).
     const column0Cell = document.createElement('td');
     const newSiteImageWrapper = document.createElement('div');
     newSiteImageWrapper.classList = 'list-view-table__cell-image-container';
@@ -2173,23 +2229,20 @@ function createSiteRow(siteConfiguration) {
     column0Cell.appendChild(newSiteImageWrapper);
     newSiteRow.appendChild(column0Cell);
 
-
-    // Column 1 (site ID)
+    // Column 1 (site ID).
     const column1Cell = document.createElement('td');
     column1Cell.classList = 'list-view-table__cell--bold-text';
     column1Cell.innerText = siteConfiguration.ID;
     newSiteRow.appendChild(column1Cell);
     newSiteRow.setAttribute('data-sorttextcol1', siteConfiguration.ID);
 
-
-    // Column 2 (site name)
+    // Column 2 (site name).
     const column2Cell = document.createElement('td');
     column2Cell.innerText = siteConfiguration.Name;
     newSiteRow.appendChild(column2Cell);
     newSiteRow.setAttribute('data-sorttextcol2', siteConfiguration.Name);
 
-
-    // Column 3 (site tags)
+    // Column 3 (site tags).
     const column3Cell = document.createElement('td');
     newSiteRow.setAttribute('data-sorttextcol3', '9');
 
@@ -2232,8 +2285,7 @@ function createSiteRow(siteConfiguration) {
 
     newSiteRow.appendChild(column3Cell);
 
-
-    // Custom columns
+    // Custom columns.
     const customColumnsSpecified = (Array.isArray(siteConfiguration.ListViewCustomColumns) && siteConfiguration.ListViewCustomColumns.length > 0) ? true : false;
 
     for (let i = 0; i < listViewCustomColumns.length; i++) {
@@ -2252,8 +2304,7 @@ function createSiteRow(siteConfiguration) {
 
     }
 
-
-    // Last column (controls)
+    // Last column (controls).
     const controlsCell = document.createElement('td');
     const newControlContainer = document.createElement('div');
     newControlContainer.classList = 'list-view-table__cell-controls-container';
@@ -2305,7 +2356,6 @@ function createSiteTile(siteConfiguration, tileContainerID) {
     tileElement.setAttribute('data-sitestatus', 9);
     tileElement.setAttribute('data-tilecontainer', tileContainerID);
 
-
     // <div class='tile__header-container'>
 
     newSiteTile.querySelector('.tile__id-text').innerText = siteConfiguration.ID;
@@ -2338,7 +2388,6 @@ function createSiteTile(siteConfiguration, tileContainerID) {
         }
 
     }
-
 
     // <div class='tile__body-container'>
 
@@ -2392,7 +2441,7 @@ function createSiteTile(siteConfiguration, tileContainerID) {
                 const newStatusItemText = document.createElement('div');
                 newStatusItemText.classList = 'tile__status-item-text';
 
-                if (typeof statusConfigurationItem.SmallValueText !== 'undefined' && statusConfigurationItem.SmallValueText === true) {
+                if (statusConfigurationItem.SmallValueText === true) {
                     newStatusItemText.classList.add('tile__status-item-text--small');
                 }
 
@@ -2401,7 +2450,7 @@ function createSiteTile(siteConfiguration, tileContainerID) {
                     const newStatusItemHyperlink = document.createElement('a');
                     newStatusItemHyperlink.innerHTML = statusConfigurationItem.ValueText;
                     newStatusItemHyperlink.setAttribute('href', statusConfigurationItem.Url);
-                    if (typeof statusConfigurationItem.OpenUrlInNewTab === 'undefined' || statusConfigurationItem.OpenUrlInNewTab === true) {
+                    if (typeof statusConfigurationItem.OpenUrlInNewTab === 'undefined' || statusConfigurationItem.OpenUrlInNewTab !== false) {
                         newStatusItemHyperlink.setAttribute('rel', 'noopener noreferrer');
                         newStatusItemHyperlink.setAttribute('target', '_blank');
                     }
@@ -2422,7 +2471,6 @@ function createSiteTile(siteConfiguration, tileContainerID) {
         newSiteTile.querySelector('.tile__status-container').remove();
     }
 
-
     // <div class='tile__image-container'>
 
     const newSiteImage = document.createElement('img');
@@ -2437,7 +2485,6 @@ function createSiteTile(siteConfiguration, tileContainerID) {
 
     newSiteImage.setAttribute('alt', '?');
     newSiteTile.querySelector('.tile__image-container').appendChild(newSiteImage);
-
 
     // <div class='tile__controls-container'>
 
@@ -2516,7 +2563,7 @@ function createTag(tagConfiguration, allowHyperlinks = true, allowTooltips = tru
 
     if (isHyperlink) {
         newTag.setAttribute('href', tagConfiguration.Url);
-        if (typeof tagConfiguration.OpenUrlInNewTab === 'undefined' || tagConfiguration.OpenUrlInNewTab === true) {
+        if (typeof tagConfiguration.OpenUrlInNewTab === 'undefined' || tagConfiguration.OpenUrlInNewTab !== false) {
             newTag.setAttribute('rel', 'noopener noreferrer');
             newTag.setAttribute('target', '_blank');
         }

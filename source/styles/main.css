@@ -2382,7 +2382,7 @@ a.tag:focus-visible {
 
 .about-dialog__body-text > p,
 .about-dialog__footer-text > p {
-    margin-block-start: 6px;
+    margin-block-start: 12px;
     margin-block-end: 0;
 }
 
