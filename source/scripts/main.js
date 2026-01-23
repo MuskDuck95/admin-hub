@@ -73,6 +73,8 @@ const contentRssFeedContainer = document.querySelector('.content__rss-feed-conta
 
 // Accessibility popup
 const contentAccessibilityContainer = document.querySelector('.content__accessibility-container');
+const settingsPopupAccessibilityBordersCheckbox = document.querySelector('#settingsPopupAccessibilityBordersCheckbox');
+const settingsPopupAccessibilityNoTransparencyCheckbox = document.querySelector('#settingsPopupAccessibilityNoTransparencyCheckbox');
 
 // Settings popup
 const contentSettingsContainer = document.querySelector('.content__settings-container');
@@ -86,8 +88,6 @@ const settingsPopupSortByIDRadioButton = document.querySelector('#settingsPopupS
 const settingsPopupSortByNameRadioButton = document.querySelector('#settingsPopupSortByNameRadioButton');
 const settingsPopupSortByStatusRadioButton = document.querySelector('#settingsPopupSortByStatusRadioButton');
 const settingsPopupAutomaticallyUpdateDataCheckbox = document.querySelector('#settingsPopupAutomaticallyUpdateDataCheckbox');
-const settingsPopupAccessibilityNoTransparencyCheckbox = document.querySelector('#settingsPopupAccessibilityNoTransparencyCheckbox');
-const settingsPopupAccessibilityBordersCheckbox = document.querySelector('#settingsPopupAccessibilityBordersCheckbox');
 
 // Clock popup
 const contentClockContainer = document.querySelector('.content__clock-container');
@@ -349,7 +349,7 @@ function searchList() {
 
     for (let i = 0; i < listViewTableCells.length; i++) {
 
-        // We'll make sure the text in the table cell is neither nor equal to '-' (which we use to represent an empty field).
+        // We'll make sure the text in the table cell is neither '' nor equal to '-' (which we use in the UI to represent an empty field).
         if (listViewTableCells[i].innerText.trim() === '' || listViewTableCells[i].innerText === '-') {
             continue;
         }
@@ -445,7 +445,7 @@ function setListViewTableResponsiveUI() {
     }
 
     // If we're not in list view we'll force all of the columns to be visible (so that we're ready to re-calculate when the user next switches back to list view).
-    let forceVisibility = content.classList.contains('content--list-view') ? false : true;
+    let forceVisibility = !content.classList.contains('content--list-view');
     if (forceVisibility && listViewColumnsLastForceVisibility) {
         return;
     }
@@ -510,17 +510,18 @@ function setView(view, isOnWindowLoad = false) {
     if (view === 'list-view') {
         content.classList.add('content--list-view');
         contentViewToggleContainer.setAttribute('data-tooltip', 'Switch to dashboard view');
-        if (!isOnWindowLoad) {
-            getListViewColumnVisibilityWidths();
-            setListViewTableResponsiveUI();
-            contentSearchInput.value = '';
-            searchTiles();
-        }
     } else {
         content.classList.remove('content--list-view');
         contentViewToggleContainer.setAttribute('data-tooltip', 'Switch to list view');
-        if (!isOnWindowLoad) {
-            contentSearchInput.value = '';
+    }
+
+    if (!isOnWindowLoad) {
+        getListViewColumnVisibilityWidths();
+        setListViewTableResponsiveUI();
+        contentSearchInput.value = '';
+        if (view === 'list-view') {
+            searchTiles();
+        } else {
             searchList();
         }
     }
@@ -636,16 +637,13 @@ function sortTiles(attribute) {
 
     for (let i = 0; i < dashboardViewTileContainers.length; i++) {
 
-        // Get the tiles in the container and sort them first by their ID, then by the specified attribute parameter.
-        // If the specified attribute is the ID we won't sort twice.
+        // If we're not sorting by the site ID attribute, we'll sort by this first before sorting by the specified attribute.
         const tilesArray = Array.from(dashboardViewTileContainers[i].querySelectorAll('.tile'));
 
-        // If we're not sorting by the site ID attribute, we'll sort by this first before sorting by the specified attribute.
         if (attribute !== 'data-siteid') {
             tilesArray.sort(function (a, b) { return sortArrayByAttribute(a, b, 'data-siteid', true) });
         }
 
-        // We'll now sort by the specified attribute.
         tilesArray.sort(function (a, b) { return sortArrayByAttribute(a, b, attribute, true) });
 
         // We'll put the sorted tiles back in to their tile container.
@@ -686,9 +684,9 @@ function sortListViewTable(column, direction) {
 
     // We'll sort the rows based on the 'data-sorttextcol<n>' attribute (where <n> is the column number).
     // We sort by the text in this attribute instead of just the cells' inner HTML (as there may be nested elements or images that have a special sort order).
+    // If we're not sorting by column 1 (the ID), we'll sort by this first before sorting the specified column.
     const sortedRowsArray = Array.from(listViewTableRows);
 
-    // If we're not sorting by column 1 (the ID), we'll sort by this first before sorting the specified column.
     if (column !== '1') {
         sortedRowsArray.sort(function (a, b) { return sortArrayByAttribute(a, b, `data-sorttextcol1`, true) })
         if (direction === 'descending') {
@@ -696,7 +694,6 @@ function sortListViewTable(column, direction) {
         }
     }
 
-    // We'll now sort by the specified column.
     sortedRowsArray.sort(function (a, b) { return sortArrayByAttribute(a, b, `data-sorttextcol${column}`, true) })
     if (direction === 'descending') {
         sortedRowsArray.reverse();
@@ -749,7 +746,7 @@ async function updateClocks() {
             contentStatusText.innerText = 'Data expired, please refresh page';
         }
 
-        // Separately to what we're displaying to the user, if its been more than 5 minutes since the last update we'll flag that we need to fetch live data on the next clock tick.
+        // If its been more than 5 minutes since the last update we'll flag that we need to fetch live data on the next clock tick.
         if (autoDataUpdate === 'true' && minutesSinceLastUpdate > 5) {
             fetchLiveDataOnNextClockTick = true;
         }
@@ -766,8 +763,8 @@ async function updateClocks() {
     }
 
     // We'll show the current UTC date/time in the clock button.
-    contentClockButtonTimeText.textContent = (('0' + currentDateTime.getUTCHours()).slice(-2) + ':' + ('0' + currentDateTime.getUTCMinutes()).slice(-2) + ' UTC');
-    contentClockButtonDateText.textContent = (('0' + currentDateTime.getUTCDate()).slice(-2) + ' ' + monthNames[currentDateTime.getUTCMonth()] + ' ' + currentDateTime.getUTCFullYear());
+    contentClockButtonTimeText.textContent = `${('0' + currentDateTime.getUTCHours()).slice(-2)}:${('0' + currentDateTime.getUTCMinutes()).slice(-2)} UTC`;
+    contentClockButtonDateText.textContent = `${('0' + currentDateTime.getUTCDate()).slice(-2)} ${monthNames[currentDateTime.getUTCMonth()]} ${currentDateTime.getUTCFullYear()}`;
 
     // We'll loop through each clock item and update the time.
     for (let i = 0; i < clockPopupItemTimeText.length; i++) {
@@ -780,7 +777,7 @@ async function updateClocks() {
         }
 
         const timeZoneDateTime = new Date(timeZoneDateTimeString);
-        clockPopupItemTimeText[i].innerHTML = (('0' + timeZoneDateTime.getHours()).slice(-2) + ':' + ('0' + timeZoneDateTime.getMinutes()).slice(-2));
+        clockPopupItemTimeText[i].innerHTML = `${('0' + timeZoneDateTime.getHours()).slice(-2)}:${('0' + timeZoneDateTime.getMinutes()).slice(-2)}`;
 
     }
 
@@ -795,7 +792,7 @@ async function updateClocks() {
 // Function to fetch the branding information from the config file and update page elements.
 function fetchBranding() {
 
-    // Fetch then process the branding.json file.
+    // We'll fetch then process the branding.json file (this file can be cached by the web browser).
     fetch(`configuration/branding.json?${fetchUrlSuffix}`)
     .then(response => {
         if (response.ok) {
@@ -831,18 +828,14 @@ function fetchBranding() {
 
         // Set the sidebar image.
         if (typeof brandingJson.ImagePath === 'string' && brandingJson.ImagePath.length > 0) {
-
             const sidebarImageWrapper = document.createElement('div');
             sidebarImageWrapper.classList = 'sidebar__image-wrapper';
-
             const sidebarImage = document.createElement('img');
             sidebarImage.classList.add(...createImageClassList(brandingJson));
             sidebarImage.setAttribute('src', brandingJson.ImagePath);
             sidebarImage.setAttribute('alt', 'Admin Hub');
-            
             sidebarImageWrapper.appendChild(sidebarImage);
             sidebar.querySelector('.sidebar__content-container').prepend(sidebarImageWrapper);
-
         }
 
         // Set the help hyperlink.
@@ -982,7 +975,7 @@ async function fetchListViewConfiguration() {
 
     listViewCustomColumns = [];
 
-    // Fetch then process the list-view.json file.
+    // We'll fetch then process the list-view.json file (this file is considered 'live data' and the web browser is not allowed to cache it).
     await fetch('configuration/list-view.json', { cache: 'no-store' })
     .then(response => {
         if (response.ok) {
@@ -1184,7 +1177,7 @@ async function fetchSites() {
     let newSitesFileAge;
     await fetchListViewConfiguration();
 
-    // We'll fetch then process the sites.json file.
+    // We'll fetch then process the sites.json file (this file is considered 'live data' and the web browser is not allowed to cache it).
     await fetch('configuration/sites.json', { cache: 'no-store' })
     .then(response => {
         if (response.ok) {
@@ -1629,7 +1622,7 @@ async function window_LoadEvent() {
             : 'true';
     settingsPopupShowRssFeedCheckbox.checked = (showRssFeed === 'true');
     settingsPopupShowRssFeedCheckbox_ChangeEvent();
-   
+
     const showClock =
         isLocalStorageAccessible
             ? localStorage.getItem('ShowClock') ?? 'true'
@@ -1643,45 +1636,45 @@ async function window_LoadEvent() {
             : 'true';
     settingsPopupShowStatisticsCheckbox.checked = (showStatistics === 'true');
     // settingsPopupShowStatisticsCheckbox_ChangeEvent() is called by fetchLiveData()
-    
+
     const autoDataUpdate =
         isLocalStorageAccessible
             ? localStorage.getItem('AutoDataUpdate') ?? 'true'
             : 'true';
     settingsPopupAutomaticallyUpdateDataCheckbox.checked = (autoDataUpdate === 'true');
     settingsPopupAutomaticallyUpdateDataCheckbox_ChangeEvent(true);
-    
+
     const accessibilityNoTransparency =
         isLocalStorageAccessible
             ? localStorage.getItem('AccessibilityNoTransparency') ?? 'false'
             : 'false';
     settingsPopupAccessibilityNoTransparencyCheckbox.checked = (accessibilityNoTransparency === 'true');
     settingsPopupAccessibilityNoTransparencyCheckbox_ChangeEvent();
-    
+
     const accessibilityBorders =
         isLocalStorageAccessible
             ? localStorage.getItem('AccessibilityBorders') ?? 'false'
             : 'false';
     settingsPopupAccessibilityBordersCheckbox.checked = (accessibilityBorders === 'true');
     settingsPopupAccessibilityBordersCheckbox_ChangeEvent();
-    
+
     const colourTheme =
         isLocalStorageAccessible
             ? localStorage.getItem('ColourTheme') ?? 'light-mode'
             : 'light-mode';
     setColourTheme(colourTheme);
-    
+
     const view =
         isLocalStorageAccessible
             ? localStorage.getItem('View') ?? 'dashboard-view'
             : 'dashboard-view';
     setView(view, true);
-    
+
     const listViewSortColumn =
         isLocalStorageAccessible
             ? localStorage.getItem('ListViewSortColumn') ?? '1'
             : '1';
-    
+
     const listViewSortDirection =
         isLocalStorageAccessible
             ? localStorage.getItem('ListViewSortDirection') ?? 'ascending'
@@ -1741,7 +1734,7 @@ function window_KeyDownEvent(event) {
 // Function that gets executed when a key up event occurs within the window.
 function window_KeyUpEvent(event) {
 
-    const ctrlKPressed = (event.ctrlKey && event.code === 'KeyK') ? true : false;
+    const ctrlKPressed = (event.ctrlKey && event.code === 'KeyK');
 
     if (event.key !== 'Escape' && !ctrlKPressed) {
         return;
@@ -2332,7 +2325,7 @@ function createSiteRow(siteConfiguration) {
     newSiteRow.appendChild(column3Cell);
 
     // Custom columns.
-    const customColumnsSpecified = (Array.isArray(siteConfiguration.ListViewCustomColumns) && siteConfiguration.ListViewCustomColumns.length > 0) ? true : false;
+    const customColumnsSpecified = (Array.isArray(siteConfiguration.ListViewCustomColumns) && siteConfiguration.ListViewCustomColumns.length > 0);
 
     for (let i = 0; i < listViewCustomColumns.length; i++) {
 
@@ -2602,7 +2595,7 @@ function createTag(tagConfiguration, allowHyperlinks = true, allowTooltips = tru
     let tagColour;
     let tagImagePath;
     let isCustomStyleApplied = false;
-    let isHyperlink = (allowHyperlinks && typeof tagConfiguration.Url === 'string' && tagConfiguration.Url.length > 0) ? true : false;
+    let isHyperlink = (allowHyperlinks && typeof tagConfiguration.Url === 'string' && tagConfiguration.Url.length > 0);
 
     const newTag = document.createElement(isHyperlink ? 'a' : 'div');
     newTag.classList = 'tag';
