@@ -936,7 +936,7 @@ function fetchClocks() {
 // Function to fetch the hyperlinks from the config file and add them to the sidebar.
 function fetchHyperlinks() {
 
-    // Fetch then process the hyperlinks.json file.
+    // We'll fetch then process the hyperlinks.json file (this file can be cached by the web browser).
     fetch(`configuration/hyperlinks.json?${fetchUrlSuffix}`)
     .then(response => {
         if (response.ok) {
@@ -949,43 +949,26 @@ function fetchHyperlinks() {
         const hyperlinkGroupContainer = document.querySelector('.sidebar__hyperlink-group-container');
         hyperlinkGroupContainer.innerHTML = '';
 
-        // We'll create and construct a new hyperlink group for each group specified in the JSON file.
         for (let i = 0; i < hyperlinksJson.length; i++) {
 
-            const newHyperlinkGroupTitleText = document.createElement('div');
-            newHyperlinkGroupTitleText.className = 'sidebar__hyperlink-group-title-text';
-            newHyperlinkGroupTitleText.innerHTML = hyperlinksJson[i].Title;
-
-            const newHyperlinkGroup = document.createElement('div');
-            newHyperlinkGroup.className = 'sidebar__hyperlink-group';
-
-            // We'll create new HTML elements for each hyperlink and add them to the new group.
-            for (let j = 0; j < hyperlinksJson[i].Hyperlinks.length; j++) {
-
-                const newHyperlink = document.createElement('a');
-                const newHyperlinkID = `hyperlink${i.toString()}-${j.toString()}`;
-                newHyperlink.setAttribute('id', newHyperlinkID);
-                newHyperlink.setAttribute('href', hyperlinksJson[i].Hyperlinks[j].Url);
-                newHyperlink.setAttribute('target', '_blank');
-                newHyperlink.setAttribute('rel', 'noopener noreferrer');
-
-                if (hyperlinksJson[i].Hyperlinks[j].ImagePath) {
-                    const newHyperlinkImage = document.createElement('img');
-                    newHyperlinkImage.classList.add(...createImageClassList(hyperlinksJson[i].Hyperlinks[j]));
-                    newHyperlinkImage.setAttribute('src', hyperlinksJson[i].Hyperlinks[j].ImagePath);
-                    newHyperlinkImage.setAttribute('alt', '?');
-                    newHyperlink.appendChild(newHyperlinkImage);
-                }
-
-                const newHyperlinkSpan = document.createElement('span');
-                newHyperlinkSpan.innerText = hyperlinksJson[i].Hyperlinks[j].Title;
-                newHyperlink.appendChild(newHyperlinkSpan);
-                newHyperlinkGroup.appendChild(newHyperlink);
-
+            // We'll create a title for the hyperlink group if one is specified.
+            if (typeof hyperlinksJson[i].Title === 'string' && hyperlinksJson[i].Title.length > 0) {
+                const newHyperlinkGroupTitleText = document.createElement('div');
+                newHyperlinkGroupTitleText.className = 'sidebar__hyperlink-group-title-text';
+                newHyperlinkGroupTitleText.innerText = hyperlinksJson[i].Title;
+                hyperlinkGroupContainer.appendChild(newHyperlinkGroupTitleText);
             }
 
-            // Add the hyperlink group to the sidebar.
-            hyperlinkGroupContainer.appendChild(newHyperlinkGroupTitleText);
+            if (!Array.isArray(hyperlinksJson[i].Hyperlinks) || hyperlinksJson[i].Hyperlinks.length === 0) {
+                continue;
+            }
+
+            // We'll create a new hyperlink group and add all the hyperlinks to it.
+            const newHyperlinkGroup = document.createElement('div');
+            newHyperlinkGroup.className = 'sidebar__hyperlink-group';
+            for (let j = 0; j < hyperlinksJson[i].Hyperlinks.length; j++) {
+                newHyperlinkGroup.appendChild(createHyperlink(hyperlinksJson[i].Hyperlinks[j]));
+            }
             hyperlinkGroupContainer.appendChild(newHyperlinkGroup);
 
         }
