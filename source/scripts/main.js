@@ -863,7 +863,7 @@ function fetchBranding() {
 // Function to fetch the clocks from the config file and add them to the clocks popup.
 function fetchClocks() {
 
-    // Fetch then process the clocks.json file.
+    // We'll fetch then process the clocks.json file (this file can be cached by the web browser).
     fetch(`configuration/clocks.json?${fetchUrlSuffix}`)
     .then(response => {
         if (response.ok) {
@@ -872,35 +872,56 @@ function fetchClocks() {
     })
     .then(clocksJson => {
 
-        if (clocksJson) {
+        const clockPopupItemTemplate = document.querySelector("#clockPopupItemTemplate");
+        const clockPopupItemContainer = document.querySelector('.clock-popup__item-container');
+        clockPopupItemContainer.innerHTML = '';
 
-            const clockPopupItemTemplate = document.querySelector("#clockPopupItemTemplate");
-            const clockPopupItemContainer = document.querySelector('.clock-popup__item-container');
-            clockPopupItemContainer.innerHTML = '';
+        for (let i = 0; i < clocksJson.length; i++) {
 
-            for (let i = 0; i < clocksJson.length; i++) {
-
-                const timeZoneDateTimeWithOffsetString = (new Date()).toLocaleString('en-US', { timeZone: clocksJson[i].TimeZone, timeZoneName: 'longOffset' });
-                const timeZoneOffset = timeZoneDateTimeWithOffsetString.match(/GMT([+-](?:(\d*\:\d*)|(\d*)))/g);
-
-                // We'll set the clock item's subtitle to include the UTC offset.
-                let clockSubtitle = clocksJson[i].Subtitle
-                if (timeZoneOffset !== null) {
-                    const utcTimeZoneOffsetString = timeZoneOffset[0].replace(/^GMT/g, 'UTC');
-                    if (clocksJson[i].Subtitle && utcTimeZoneOffsetString) {
-                        clockSubtitle += ' \u2022 ';
-                    }
-                    clockSubtitle += utcTimeZoneOffsetString;
-                }
-
-                // We'll create a new clock item and add it to the container.
-                const newClockPopupItem = document.importNode(clockPopupItemTemplate.content, true);
-                newClockPopupItem.querySelector('.clock-popup__item-title-text').innerText = clocksJson[i].Title;
-                newClockPopupItem.querySelector('.clock-popup__item-subtitle-text').innerText = clockSubtitle;
-                newClockPopupItem.querySelector('.clock-popup__item-time-text').setAttribute('data-timezone', clocksJson[i].TimeZone);
-                clockPopupItemContainer.appendChild(newClockPopupItem);
-
+            // We'll check that a valid time zone is specified for the clock.
+            if (typeof clocksJson[i].TimeZone !== 'string' || clocksJson[i].TimeZone.length === 0) {
+                throw new Error(`No TimeZone was defined for clock ${i.toString()} in the clocks.json file`);
             }
+
+            let timeZoneDateTimeWithOffsetString;
+            try {
+                timeZoneDateTimeWithOffsetString = (new Date()).toLocaleString('en-US', { timeZone: clocksJson[i].TimeZone, timeZoneName: 'longOffset' });
+            } catch {
+                throw new Error(`The TimeZone '${clocksJson[i].TimeZone}' for clock ${i.toString()} in the clocks.json file is not a valid time zone`);
+            }
+
+            // If no title is specified in the configuration we'll set the clock's title to be the time zone name.
+            const clockTitle =
+                (typeof clocksJson[i].Title === 'string' && clocksJson[i].Title.length > 0)
+                    ? clocksJson[i].Title
+                    : clocksJson[i].TimeZone;
+
+            // We'll start to construct the clock's subtitle.
+            let clockSubtitle =
+                (typeof clocksJson[i].Subtitle === 'string' && clocksJson[i].Subtitle.length > 0)
+                    ? clocksJson[i].Subtitle
+                    : '';
+
+            // We'll add the UTC offset to the clock's subtitle.
+            const timeZoneOffset = timeZoneDateTimeWithOffsetString.match(/GMT([+-](?:(\d*\:\d*)|(\d*)))/g);
+            if (Array.isArray(timeZoneOffset) && typeof timeZoneOffset[0] === 'string' && timeZoneOffset[0].length > 0) {
+                const utcTimeZoneOffsetString = timeZoneOffset[0].replace(/^GMT/g, 'UTC');
+                if (clockSubtitle.length > 0) {
+                    clockSubtitle += ' \u2022 ';
+                }
+                clockSubtitle += utcTimeZoneOffsetString;
+            }
+
+            // We'll create a new clock item and add it to the container.
+            const newClockPopupItem = document.importNode(clockPopupItemTemplate.content, true);
+            newClockPopupItem.querySelector('.clock-popup__item-title-text').innerText = clockTitle;
+            if (clockSubtitle.length > 0) {
+                newClockPopupItem.querySelector('.clock-popup__item-subtitle-text').innerText = clockSubtitle;
+            } else {
+                newClockPopupItem.querySelector('.clock-popup__item-subtitle-text').remove();
+            }
+            newClockPopupItem.querySelector('.clock-popup__item-time-text').setAttribute('data-timezone', clocksJson[i].TimeZone);
+            clockPopupItemContainer.appendChild(newClockPopupItem);
 
         }
 
