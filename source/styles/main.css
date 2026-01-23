@@ -75,7 +75,7 @@
     16 - Global overrides
         16.1 - Image dark mode handling
         16.2 - Superellipse support
-        
+
 */
 
 
@@ -453,6 +453,10 @@ body {
     flex-direction: column;
     overflow: hidden;
     padding: 6px 8px;
+}
+
+.sidebar__image-wrapper + .sidebar__hyperlink-group-container > .sidebar__hyperlink-group:first-child {
+    margin-top: 18px;
 }
 
 .sidebar__hyperlink-group > a {
@@ -977,6 +981,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    justify-content: center;
     padding-left: 8px;
 }
 
@@ -1778,7 +1783,11 @@ body {
 .statistic-tile__top-row-container {
     display: flex;
     flex-grow: 1;
-    padding: 8px 8px 0 8px;
+    padding: 8px;
+}
+
+.statistic-tile__top-row-container:has(+ .statistic-tile__title-text) {
+    padding-bottom: 0;
 }
 
 .statistic-tile__value-text {

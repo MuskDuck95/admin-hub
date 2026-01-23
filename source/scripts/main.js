@@ -1332,7 +1332,7 @@ async function fetchStatistics() {
 
     let newStatisticsFileAge;
 
-    // Fetch then process the statistics.json file.
+    // We'll fetch then process the statistics.json file (this file is considered 'live data' and the web browser is not allowed to cache it).
     await fetch('configuration/statistics.json', { cache: 'no-store' })
     .then(response => {
         if (response.ok) {
@@ -1367,49 +1367,53 @@ async function fetchStatistics() {
         // We'll create a statistic tile for each statistic in the JSON file.
         for (let i = 0; i < statisticsJson.length; i++) {
 
-            if (typeof statisticsJson[i].Title !== 'string' || statisticsJson[i].Title.length === 0) {
-                throw new Error(`No Title was defined for statistic ${i.toString()} in the statistics.json file`);
-            }
-
-            if (typeof statisticsJson[i].Value !== 'string' || statisticsJson[i].Value.length === 0) {
-                throw new Error(`No Value was defined for statistic ${i.toString()} in the statistics.json file`);
-            }
-
             // To ensure the UI stays responsive, we align everything in the content pane based on the flow of site tiles.
             // Each site tile in the UI is the same width as two statistic tiles that we're about to create below.
-            // To ensure everything lines up, we group every two statistic tiles together in a sub-container so that their flow matches that of the full width site tiles.
-            // If this is an even numbered tile, we'll create a new sub-container (odd numbered tiles get added to their predecessor's sub-container).
+            // To ensure everything lines up, we group every two statistic tiles together in a subcontainer so that their flow matches that of the full width site tiles.
+            // If this is an even numbered tile, we'll create a new subcontainer (odd numbered tiles get added to their predecessor's subcontainer).
             if (i % 2 === 0) {
                 currentSubcontainer = document.createElement('div');
                 currentSubcontainer.classList.add('dashboard-view__statistic-tile-subcontainer');
             }
 
-            // Create a new statistic tile.
             const newStatisticTile = document.importNode(statisticTileTemplate.content, true);
 
-            if (typeof statisticsJson[i].Tooltip === 'string' && statisticsJson[i].Tooltip.length > 0) {
-                newStatisticTile.querySelector('.statistic-tile').setAttribute('data-tooltip', statisticsJson[i].Tooltip);
-            }
-
+            // We'll set the statistic tile's image path.
             if (typeof statisticsJson[i].ImagePath === 'string' && statisticsJson[i].ImagePath.length > 0) {
                 newStatisticTile.querySelector('.statistic-tile__image-wrapper').innerHTML = `<img src='${statisticsJson[i].ImagePath}' alt='?'></img>`;
             } else {
                 newStatisticTile.querySelector('.statistic-tile__image-wrapper').remove();
             }
 
-            newStatisticTile.querySelector('.statistic-tile__title-text').innerText = statisticsJson[i].Title;
-            newStatisticTile.querySelector('.statistic-tile__value-text').innerText = statisticsJson[i].Value;
+            // We'll set the statistic tile's title.
+            if (typeof statisticsJson[i].Title === 'string' && statisticsJson[i].Title.length > 0) {
+                newStatisticTile.querySelector('.statistic-tile__title-text').innerText = statisticsJson[i].Title;
+            } else {
+                newStatisticTile.querySelector('.statistic-tile__title-text').remove();
+            }
+
+            // We'll set the statistic tile's value.
+            if (typeof statisticsJson[i].Value === 'string' && statisticsJson[i].Value.length > 0) {
+                newStatisticTile.querySelector('.statistic-tile__value-text').innerText = statisticsJson[i].Value;
+            } else {
+                newStatisticTile.querySelector('.statistic-tile__value-text').remove();
+            }
+
+            // We'll set the statistic tile's tooltip.
+            if (typeof statisticsJson[i].Tooltip === 'string' && statisticsJson[i].Tooltip.length > 0) {
+                newStatisticTile.querySelector('.statistic-tile').setAttribute('data-tooltip', statisticsJson[i].Tooltip);
+            }
 
             currentSubcontainer.appendChild(newStatisticTile);
 
-            // If this is an odd numbered tile (or the last tile) we'll close off the sub-container.
+            // If this is an odd numbered tile (or the last tile) we'll close off the subcontainer.
             if (i % 2 !== 0 || i >= (statisticsJson.length - 1)) {
                 subcontainers.push(currentSubcontainer);
             }
 
         }
 
-        // Add the sub-containers to the statistic tile container.
+        // Add the subcontainers to the statistic tile container.
         for (let i = 0; i < subcontainers.length; i++) {
             statisticTileContainer.appendChild(subcontainers[i]);
         }
