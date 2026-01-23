@@ -1087,7 +1087,7 @@ function fetchRssFeed() {
     let newRssFeedFileAge;
     let rssUrl;
 
-    // Fetch then process the RSS file (this file sits at the root of the site and does not have a file extension).
+    // We'll fetch then process the rss file (this file is considered 'live data' and the web browser is not allowed to cache it).
     fetch('rss', { cache: 'no-store' })
     .then(response => {
         if (response.ok) {
@@ -1109,19 +1109,57 @@ function fetchRssFeed() {
 
         rssFeedFileAge = newRssFeedFileAge;
 
-        const rssItems = rss.getElementsByTagName('item');
+        const rssItems = rss.querySelectorAll('item');
         const rssFeedPopupItemTemplate = document.querySelector("#rssFeedPopupItemTemplate");
         const rssFeedPopupItemContainer = document.querySelector('.rss-feed-popup__item-container');
         rssFeedPopupItemContainer.innerHTML = '';
 
+        // We'll set the default item link to be either the channel link (if specified) or the URL to the RSS feed.
+        const rssLink = rss.querySelector('channel > link')?.innerHTML;
+        const rssItemDefaultLink =
+            (typeof rssLink === 'string' && rssLink.length > 0)
+                ? rssLink
+                : rssUrl;
+
         // We'll add each RSS feed item to the RRS feed popup.
         for (let i = 0; i < rssItems.length; i++) {
+
             const newRssFeedPopupItem = document.importNode(rssFeedPopupItemTemplate.content, true);
-            newRssFeedPopupItem.querySelector('.rss-feed-popup__item').setAttribute('href', rssItems[i].getElementsByTagName('link')[0].innerHTML);
-            newRssFeedPopupItem.querySelector('.rss-feed-popup__item-title-text').innerHTML = rssItems[i].getElementsByTagName('title')[0].innerHTML;
-            newRssFeedPopupItem.querySelector('.rss-feed-popup__item-subtitle-text').innerHTML = (rssItems[i].getElementsByTagName('pubDate')[0].innerHTML).replace('GMT', 'UTC');
-            newRssFeedPopupItem.querySelector('.rss-feed-popup__item-body-text').innerHTML = rssItems[i].getElementsByTagName('description')[0].innerHTML;
+
+            // We'll set the hyperlink URL.
+            const rssItemLink = rssItems[i].querySelector('link')?.innerHTML;
+            const rssItemLinkHref =
+                (typeof rssItemLink === 'string' && rssItemLink.length > 0)
+                    ? rssItemLink
+                    : rssItemDefaultLink;
+            newRssFeedPopupItem.querySelector('.rss-feed-popup__item').setAttribute('href', rssItemLinkHref);
+
+            // We'll set or remove the item's title.
+            const rssItemTitle = rssItems[i].querySelector('title')?.innerHTML;
+            if (typeof rssItemTitle === 'string' && rssItemTitle.length > 0) {
+                newRssFeedPopupItem.querySelector('.rss-feed-popup__item-title-text').innerHTML = rssItemTitle;
+            } else {
+                newRssFeedPopupItem.querySelector('.rss-feed-popup__item-title-text').remove();
+            }
+
+            // We'll set or remove the item's publication date.
+            const rssItemPubDate = rssItems[i].querySelector('pubDate')?.innerHTML;
+            if (typeof rssItemPubDate === 'string' && rssItemPubDate.length > 0) {
+                newRssFeedPopupItem.querySelector('.rss-feed-popup__item-subtitle-text').innerHTML = rssItemPubDate.replace('GMT', 'UTC');
+            } else {
+                newRssFeedPopupItem.querySelector('.rss-feed-popup__item-subtitle-text').remove();
+            }
+
+            // We'll set or remove the item's description.
+            const rssItemDescription = rssItems[i].querySelector('description')?.innerHTML;
+            if (typeof rssItemDescription === 'string' && rssItemDescription.length > 0) {
+                newRssFeedPopupItem.querySelector('.rss-feed-popup__item-body-text').innerHTML = rssItemDescription;
+            } else {
+                newRssFeedPopupItem.querySelector('.rss-feed-popup__item-body-text').remove()
+            }
+
             rssFeedPopupItemContainer.appendChild(newRssFeedPopupItem);
+
         }
 
         // We'll add a link to the RSS feed in the sidebar footer (if it doesn't exist already).
