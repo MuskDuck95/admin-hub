@@ -821,9 +821,21 @@ function fetchBranding() {
             document.documentElement.setAttribute('highlight-colour', brandingJson.HighlightColour.toLowerCase());
         }
 
-        // Set the header text.
-        if (typeof brandingJson.HeaderText === 'string' && brandingJson.HeaderText.length > 0) {
-            header.innerHTML = brandingJson.HeaderText;
+        // Set the header title.
+        const headerTitleElement = document.createElement('b');
+        headerTitleElement.textContent =
+            (typeof brandingJson.HeaderTitle === 'string' && brandingJson.HeaderTitle.length > 0)
+                ? brandingJson.HeaderTitle
+                : 'Admin Hub';
+        header.appendChild(headerTitleElement);
+
+        // Set the header subtitle.
+        if (typeof brandingJson.HeaderSubtitle === 'string' && brandingJson.HeaderSubtitle.length > 0) {
+            const headerSeparatorElement = document.createElement('span');
+            headerSeparatorElement.classList = 'header__separator';
+            header.appendChild(headerSeparatorElement);
+            const headerSubtitleElement = document.createTextNode(brandingJson.HeaderSubtitle);
+            header.appendChild(headerSubtitleElement);
         }
 
         // Set the sidebar image.
