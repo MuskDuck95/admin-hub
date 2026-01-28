@@ -2,16 +2,13 @@
 
 Admin Hub is a lightweight, fully customisable, frontend-only website that's designed to serve as a dashboard for system administrators.
 
-It lets sysadmins see the health of each site in their environment and quickly access other admin portals and tools.
+It lets sysadmins see the health of each site in their environment and quickly access other tools and portals.
 
 Admin Hub only needs a few megabytes of space on a web server to run (e.g. on an Apache or IIS server).
 
 ## Getting started
 
-### Quick links
-Follow the links below:
-
-* [Install and configure](https://stuartgarner.au/admin-hub/setup/)
+* [Setup guide](https://stuartgarner.au/admin-hub/setup/)
 * [User guide](https://stuartgarner.au/admin-hub/help/)
 * [Live demo](https://stuartgarner.au/admin-hub/demo/)
 
@@ -19,22 +16,25 @@ Follow the links below:
 
 ### Why does Admin Hub exist?
 
-TODO
+On several occasions now I've needed to create a dashboard UI for other sysadmins I work with so that they can quickly see system health and status information about the IT networks they administer.
 
-### What can Admin Hub show me about my environment?
+Having worked in predominantly Windows-based environments, we often use products like SCOM for monitoring system health and Splunk for SIEM. But I needed something a bit more lightweight that could act as a home page for sysadmins and our support teams that provides high-level health information at a glance.
 
-TODO
+When I first had the need to create a dashboard UI I started working on the front-end at home while learning about web development. I'd never touched HTML, CSS or JavaScript before. Over the years, I've continued to work on it privately while learning more and more about front-end development. Having continually re-used the same front-end on several occasions I've decided to share it.
 
 ### If it's 'frontend-only', where does all the data about my environment come from?
 
 That's up to you!
 
 Admin Hub doesn't have any backend code - it's just HTML, CSS and JavaScript (and some images and config files) sitting on a web server.
-When a user navigates to Admin Hub from a web browser, it'll look for some specific JSON files on your web server to get data about your environment (and will continually checks these files for any updates and changes).
 
-The data Admin Hub shows about your environment comes from these JSON files. You can populate the data in the JSON files any way you want.
+When a user navigates to Admin Hub from a web browser, it'll look for some JSON files on the web server that hold information about your environment. The webpage will continually checks these files for any changes or new data and update the webpage accordingly.
 
-For example: say you're running a primarily Windows Server-based environment. You could create a PowerShell script to test the latency to each site on your network. Your script can then export the results of those latency tests the sites.json file on the web server. Set that up as a scheduled.
+How you get the data in to those JSON files is entirely up to you.
+
+For example: say you're running a primarily Windows-based environment. You could create a PowerShell script to test the latency to each site on your network by doing a simple ping. Your script can then export the results of those latency tests to the *sites.json* file on the web server. Set that up as a scheduled task to run every 5 to 10 minutes and your good to go.
+
+Check out the [setup guide](https://stuartgarner.au/admin-hub/setup/) to see how to get started.
 
 ### What web browsers does Admin Hub support?
 
